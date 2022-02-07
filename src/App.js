@@ -4,11 +4,10 @@ import {
     Routes,
     Route, Navigate
 } from "react-router-dom";
-import Main from "./pages/Repositories";
-import Card from "./pages/Repostory";
 import {Container} from "@mui/material";
 import HomePage from "./pages/Home";
 import Repositories from "./pages/Repositories";
+import Repository from "./pages/Repostory";
 
 function App() {
   return (
@@ -17,7 +16,7 @@ function App() {
             <Routes>
                 <Route exact path='/repositories' element={<Repositories />} />
                 <Route exact path='/' element={<HomePage/>} />
-                {/*<Route path='/card/:login/:repo' element={<Card />} />*/}
+                <Route path='/repositories/:login/:repo' element={<Repository />} />
                 <Route
                     path="*"
                     element={<Navigate to="/" />}

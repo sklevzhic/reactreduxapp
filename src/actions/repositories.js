@@ -12,9 +12,14 @@ export const fetchRepositories = (searchQuery = "stars:%3E1", currentpage, rowsP
     }
 
     return async (dispatch) => {
-        dispatch(setFetchingRepositories())
-        const response = await axios.get(`https://api.github.com/search/repositories?q=${searchQuery || ''}&page=${currentpage}&per_page=${rowsPerPage}&sort=stars`)
-        dispatch(setRepositories(response.data))
+        try {
+            dispatch(setFetchingRepositories())
+            let url = `https://api.github.com/search/repositories?q=${searchQuery || ''}&page=${currentpage}&per_page=${rowsPerPage}&sort=stars`
+            const response = await axios.get(url)
+            dispatch(setRepositories(response.data))
+        } catch (e) {
+            alert("Ошибка при загрузке информации")
+        }
     }
 }
 

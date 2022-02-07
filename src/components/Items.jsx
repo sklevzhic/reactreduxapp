@@ -22,7 +22,7 @@ const Items = () => {
                             return <ListItem
                                 button
                                 component={NavLink}
-                                to={`/card/${el.owner.login}/${el.name}`}
+                                to={`/repositories/${el.owner.login}/${el.name}`}
                                 key={el.id}
                                 alignItems="flex-start"
                                 secondaryAction={

@@ -13,20 +13,26 @@ import ListItemButton from "@mui/material/ListItemButton";
 import {useEffect} from "react";
 import {fetchCurrentRepo, fetchCurrentRepoContributors} from "../actions/repositories";
 import {useDispatch, useSelector} from "react-redux";
+import {setDeleteContributorsRepo, setDeleteCurrentRepo} from "../reducers/repositoriesReducer";
 
 
-const CardItem = () => {
+const Repository = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    let { login, repo } = useParams();
-    const {currentRepo, contributors, isFetchingContributors} = useSelector(state => state.repositories)
+    let {login, repo} = useParams();
+    const {currentRepo, contributors, isFetchingContributors, isFetchingCurrentRepo} = useSelector(state => state.repositories)
 
     useEffect(() => {
         dispatch(fetchCurrentRepo(login, repo))
+        return () => {
+            dispatch(setDeleteCurrentRepo())
+        }
     }, [])
-
     useEffect(() => {
         dispatch(fetchCurrentRepoContributors(login, repo))
+        return () => {
+            dispatch(setDeleteContributorsRepo())
+        }
     }, [])
 
     return (
@@ -36,19 +42,21 @@ const CardItem = () => {
             <Grid container>
                 <Grid item xs={4}>
                     {
-                        currentRepo.owner !== undefined &&                     <Card sx={{maxWidth: 345}}>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image={currentRepo.owner.avatar_url}
-                                alt="green iguana"
-                            />
-                            <CardContent>
-                                <Typography>
-                                    {currentRepo.owner.login}
-                                </Typography>
-                            </CardContent>
-                        </Card>
+                        currentRepo.owner !== undefined ? <>
+                            <Card sx={{maxWidth: 345}}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={currentRepo.owner.avatar_url}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography>
+                                        {currentRepo.owner.login}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </> : "Загрузка"
                     }
                 </Grid>
                 <Grid item xs={8}>
@@ -56,16 +64,16 @@ const CardItem = () => {
                         Contributors
                     </Typography>
                     <List
-                        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                        sx={{width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}
                         aria-label="contacts"
                     >
                         {
-                            !isFetchingContributors ? <>
+                            contributors ? <>
                                 {
                                     contributors.map(el => {
                                         return <ListItem disablePadding>
                                             <ListItemButton>
-                                                <ListItemText primary={el.login} />
+                                                <ListItemText primary={el.login}/>
                                             </ListItemButton>
                                         </ListItem>
                                     })
@@ -81,4 +89,4 @@ const CardItem = () => {
     )
 }
 
-export default CardItem
+export default Repository

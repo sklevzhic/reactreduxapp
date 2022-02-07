@@ -7,18 +7,21 @@ const SET_CURRENT_REPO = 'SET_CURRENT_REPO'
 const SET_CONTRIBUTORS = 'SET_CONTRIBUTORS'
 const SET_FETCHING_CONTRIBUTORS = 'SET_FETCHING_CONTRIBUTORS'
 const SET_FETCHING_CURRENT_REPO = 'SET_FETCHING_CURRENT_REPO'
+const DELETE_CURRENT_REPO = "DELETE_CURRENT_REPO"
+const DELETE_CONTRIBUTORS_REPO = "DELETE_CONTRIBUTORS_REPO"
+
 
 const defaultState = {
     repositories: [],
 
     isFetchingRepositories: false,
-    currentPage: 31,
+    currentPage: 1,
     rowsPerPage: 10,
     pagesPagination: 0,
     searchText: "",
     currentRepo: {},
-    isFetchingCurrentRepo: false,
     contributors: [],
+    isFetchingCurrentRepo: false,
     isFetchingContributors: false,
 }
 
@@ -48,6 +51,16 @@ export default function repositoriesReducer(state = defaultState, action) {
                 ...state,
                 currentRepo: action.payload,
                 isFetchingCurrentRepo: false
+            }
+        case DELETE_CURRENT_REPO:
+            return {
+                ...state,
+                currentRepo: {},
+            }
+        case DELETE_CONTRIBUTORS_REPO:
+            return {
+                ...state,
+                contributors: [],
             }
         case SET_CONTRIBUTORS:
             return {
@@ -79,3 +92,5 @@ export const setCurrentRepo = (payload) => ({type: SET_CURRENT_REPO, payload})
 export const setContributors = (payload) => ({type: SET_CONTRIBUTORS, payload})
 export const setFetchingCurrentRepo = () => ({type: SET_FETCHING_CURRENT_REPO})
 export const setFetchingContributors = () => ({type: SET_FETCHING_CONTRIBUTORS})
+export const setDeleteCurrentRepo = () => ({type: DELETE_CURRENT_REPO})
+export const setDeleteContributorsRepo = () => ({type: DELETE_CONTRIBUTORS_REPO})
