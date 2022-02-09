@@ -9,9 +9,12 @@ import {useEffect} from "react";
 import {fetchRepositories} from "../actions/repositories";
 
 const Items = () => {
-    const dispatch = useDispatch()
+
     const { repositories, isFetchingRepositories } = useSelector(state => state.repositories)
 
+    if (repositories.length === 0) {
+        return "Ничего не найдено"
+    }
 
     return (
         <List>

@@ -1,24 +1,27 @@
 import axios from "axios";
 import {
     setContributors,
-    setCurrentRepo, setFetchingCurrentRepo,
+    setCurrentRepo, setFetchError, setFetchingCurrentRepo,
     setFetchingRepositories,
     setRepositories
 } from "../reducers/repositoriesReducer";
 
 export const fetchRepositories = (searchQuery = "stars:%3E1", currentpage, rowsPerPage) => {
-    if (searchQuery  == "") {
+    if (searchQuery == "") {
         searchQuery = "stars:%3E1"
     }
 
     return async (dispatch) => {
         try {
-            dispatch(setFetchingRepositories())
+            dispatch(setFetchingRepositories(true))
             let url = `https://api.github.com/search/repositories?q=${searchQuery || ''}&page=${currentpage}&per_page=${rowsPerPage}&sort=stars`
             const response = await axios.get(url)
             dispatch(setRepositories(response.data))
         } catch (e) {
-            alert("Ошибка при загрузке информации")
+            dispatch(setFetchError(e.message))
+        } finally {
+            dispatch(setFetchingRepositories(false))
+
         }
     }
 }

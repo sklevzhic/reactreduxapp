@@ -71,7 +71,7 @@ const Repository = () => {
                             contributors ? <>
                                 {
                                     contributors.map(el => {
-                                        return <ListItem disablePadding>
+                                        return <ListItem key={el.login} disablePadding>
                                             <ListItemButton>
                                                 <ListItemText primary={el.login}/>
                                             </ListItemButton>

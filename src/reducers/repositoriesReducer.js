@@ -9,14 +9,15 @@ const SET_FETCHING_CONTRIBUTORS = 'SET_FETCHING_CONTRIBUTORS'
 const SET_FETCHING_CURRENT_REPO = 'SET_FETCHING_CURRENT_REPO'
 const DELETE_CURRENT_REPO = "DELETE_CURRENT_REPO"
 const DELETE_CONTRIBUTORS_REPO = "DELETE_CONTRIBUTORS_REPO"
+const SET_ERROR = "SET_ERROR"
 
 
 const defaultState = {
     repositories: [],
-
     isFetchingRepositories: false,
     currentPage: 1,
     rowsPerPage: 10,
+    error: "",
     pagesPagination: 0,
     searchText: "",
     currentRepo: {},
@@ -32,13 +33,14 @@ export default function repositoriesReducer(state = defaultState, action) {
             return {
                 ...state,
                 repositories: action.payload.items,
+                error: "",
                 pagesPagination: Math.ceil(action.payload.total_count / state.rowsPerPage),
                 isFetchingRepositories: false
             }
         case SET_IS_FETCHING_REPOSITORIES:
             return {
                 ...state,
-                isFetchingRepositories: true
+                isFetchingRepositories: action.payload
             }
         case SET_PAGES_PAGINATION:
             return {...state, pagesPagination: action.payload}
@@ -78,18 +80,24 @@ export default function repositoriesReducer(state = defaultState, action) {
                 ...state,
                 isFetchingRepositories: true
             }
+        case SET_ERROR:
+            return {
+                ...state,
+                error: action.payload
+            }
         default:
             return state
     }
 }
 
 export const setRepositories = (payload) => ({type: SET_REPOSITORIES, payload})
-export const setFetchingRepositories = () => ({type: SET_IS_FETCHING_REPOSITORIES})
+export const setFetchingRepositories = (payload) => ({type: SET_IS_FETCHING_REPOSITORIES, payload})
 export const setPagesPagination = (payload) => ({type: SET_PAGES_PAGINATION, payload})
 export const setSearchText = (payload) => ({type: SET_SEARCH_TEXT, payload})
 export const setCurrentPage = (payload) => ({type: SET_CURRENT_PAGE, payload})
 export const setCurrentRepo = (payload) => ({type: SET_CURRENT_REPO, payload})
 export const setContributors = (payload) => ({type: SET_CONTRIBUTORS, payload})
+export const setFetchError = (payload) => ({type: SET_ERROR, payload})
 export const setFetchingCurrentRepo = () => ({type: SET_FETCHING_CURRENT_REPO})
 export const setFetchingContributors = () => ({type: SET_FETCHING_CONTRIBUTORS})
 export const setDeleteCurrentRepo = () => ({type: DELETE_CURRENT_REPO})
