@@ -47,7 +47,7 @@ const Search = () => {
                 variant="contained"
                 onClick={handlerSearchButton}
             >
-                Send
+                Искать
             </Button>
         </>
     )

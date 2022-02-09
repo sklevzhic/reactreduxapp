@@ -3,7 +3,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {Avatar, Box, List, ListItemAvatar, Skeleton, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
-import CommentIcon from '@mui/icons-material/Comment';
+import LinkIcon from '@mui/icons-material/Link';
 import IconButton from '@mui/material/IconButton';
 import {useEffect} from "react";
 import {fetchRepositories} from "../actions/repositories";
@@ -29,16 +29,18 @@ const Items = () => {
                                 key={el.id}
                                 alignItems="flex-start"
                                 secondaryAction={
-                                    <IconButton>
-                                        <CommentIcon />
+                                    <IconButton href={el.owner.url}>
+                                        <LinkIcon />
+                                        {/*link = */}
                                     </IconButton>
                                 }
                             >
                                 <ListItemAvatar>
+
                                     <Avatar alt="Remy Sharp" src={el.owner.avatar_url} />
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary={el.name}
+                                    primary={`${el.name} [${el.stargazers_count} звезд]`}
                                     secondary={
                                         <>
                                             <Typography
@@ -49,7 +51,7 @@ const Items = () => {
                                             >
                                                 {el.owner.login}
                                             </Typography>
-                                            {` stars = ${el.stargazers_count} last commit = ${el.updated_at} link = ${el.owner.url}`}
+                                            {` Последний коммит = ${el.updated_at}`}
                                         </>
                                     }
                                 />
